@@ -13,6 +13,7 @@ func main() {
 
 	r.POST("/api/v1/init", handlers.InitializeAccount)
 	r.POST("/api/v1/wallet", middleware.AuthRequired(), handlers.EnableWallet)
+	r.GET("/api/v1/wallet", middleware.AuthRequired(), handlers.ViewWallet)
 
 	r.Run(":8080")
 }
