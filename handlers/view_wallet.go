@@ -24,7 +24,7 @@ func ViewWallet(c *gin.Context) {
 	}
 
 	if wallet.Status != "enabled" {
-		utils.ErrorResponse(c, http.StatusForbidden, map[string][]string{"status": {"Wallet disabled"}})
+		utils.ErrorResponse(c, http.StatusForbidden, map[string][]string{"status": {"Wallet is not enabled"}})
 		return
 	}
 
