@@ -16,7 +16,7 @@ func main() {
 	r.GET("/api/v1/wallet", middleware.AuthRequired(), handlers.ViewWallet)
 	r.GET("/api/v1/wallet/transactions", middleware.AuthRequired(), handlers.ViewTransactions)
 	r.POST("/api/v1/wallet/deposits", middleware.AuthRequired(), handlers.DepositMoney)
-	r.POST("/api/v1/wallet/withdrawals", middleware.AuthRequired(), handlers.DepositMoney)
+	r.POST("/api/v1/wallet/withdrawals", middleware.AuthRequired(), handlers.WithdrawMoney)
 	r.PATCH("/api/v1/wallet", middleware.AuthRequired(), handlers.DisableWallet)
 
 	r.Run(":8080")

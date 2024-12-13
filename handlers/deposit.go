@@ -4,7 +4,6 @@ import (
 	"mini-wallet-api/models"
 	"mini-wallet-api/utils"
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -39,10 +38,14 @@ func DepositMoney(c *gin.Context) {
 		return
 	}
 
-	if _, exists := models.Transactions[request.ReferenceID]; exists {
-		errors["reference_id"] = append(errors["reference_id"], "Reference ID already used")
-		utils.ErrorResponse(c, http.StatusBadRequest, errors)
-		return
+	for _, transactions := range models.Transactions {
+		for _, transaction := range transactions {
+			if transaction.ReferenceID == request.ReferenceID {
+				errors["reference_id"] = append(errors["reference_id"], "Reference ID already used")
+				utils.ErrorResponse(c, http.StatusBadRequest, errors)
+				return
+			}
+		}
 	}
 
 	newTransaction := &models.Transaction{
@@ -56,10 +59,7 @@ func DepositMoney(c *gin.Context) {
 
 	models.Transactions[wallet.OwnedBy] = append(models.Transactions[wallet.OwnedBy], newTransaction)
 
-	go func() {
-		time.Sleep(3 * time.Second)
-		wallet.Balance += request.Amount
-	}()
+	wallet.Balance += request.Amount
 
 	depositResponse := models.DepositResponse{
 		ID:          newTransaction.ID,

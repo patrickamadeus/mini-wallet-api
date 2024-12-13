@@ -25,6 +25,10 @@ func ViewTransactions(c *gin.Context) {
 		transactions = append(transactions, *transaction) // Dereference pointer to value
 	}
 
+	if len(models.Transactions[walletID]) == 0 {
+		transactions = []models.Transaction{}
+	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"status": "success",
 		"data": gin.H{
